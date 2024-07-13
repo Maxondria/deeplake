@@ -2,7 +2,7 @@ from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 from langchain.prompts import HumanMessagePromptTemplate, ChatPromptTemplate, MessagesPlaceholder
 from langchain.chains.llm import LLMChain
-from langchain.memory import ConversationBufferMemory
+from langchain.memory import ConversationBufferMemory, FileChatMessageHistory
 
 load_dotenv()
 
@@ -18,7 +18,9 @@ prompt = ChatPromptTemplate(
 llm = ChatOpenAI()
 
 memory = ConversationBufferMemory(
-    memory_key="chat_history", return_messages=True
+    memory_key="chat_history",
+    return_messages=True,
+    chat_memory=FileChatMessageHistory(file_path="chat_history.json")
 )
 
 chain = LLMChain(llm=llm, prompt=prompt, memory=memory)
